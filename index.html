@@ -21,6 +21,7 @@
             min-height: 100vh;
             padding: 20px;
             gap: 30px;
+            overflow-x: hidden;
         }
         
         /* Container HP */
@@ -33,6 +34,7 @@
             overflow: hidden;
             position: relative;
             border: 10px solid #222;
+            max-width: 100%;
         }
         
         .content {
@@ -43,18 +45,24 @@
             align-items: center;
             background-color: #000;
             padding-top: 120px;
+            width: 100%;
+            overflow: hidden;
         }
         
         .gift-section {
             background-color: rgba(0, 0, 0, 0.9);
             padding: 15px;
             border-radius: 15px;
+            width: 100%;
+            max-width: 320px;
+            margin: 0 auto;
         }
         
         .gift-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 15px;
+            width: 100%;
         }
         
         .gift-item {
@@ -64,6 +72,7 @@
             padding: 8px 5px;
             text-align: center;
             color: white;
+            width: 100%;
         }
         
         .gift-image {
@@ -72,10 +81,15 @@
             border-radius: 8px;
             margin-bottom: 6px;
             object-fit: cover;
+            max-width: 100%;
         }
         
         .gift-name {
             font-size: 11px;
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
         
         .notch {
@@ -99,6 +113,7 @@
             padding: 20px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             color: white;
+            max-width: 95%;
         }
         
         .editor-title {
@@ -120,6 +135,7 @@
             grid-template-columns: repeat(3, 1fr);
             gap: 10px;
             margin-bottom: 20px;
+            width: 100%;
         }
         
         .name-item {
@@ -132,6 +148,10 @@
             border: 2px solid transparent;
             font-size: 13px;
             font-weight: 500;
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
         
         .name-item:hover {
@@ -153,6 +173,7 @@
             font-size: 14px;
             color: #ff0050;
             font-weight: 500;
+            width: 100%;
         }
         
         .editor-controls {
@@ -160,12 +181,14 @@
             flex-direction: column;
             gap: 15px;
             margin: 20px 0;
+            width: 100%;
         }
         
         .control-group {
             display: flex;
             flex-direction: column;
             gap: 8px;
+            width: 100%;
         }
         
         .control-label {
@@ -182,6 +205,7 @@
             color: white;
             font-size: 14px;
             transition: all 0.3s;
+            width: 100%;
         }
         
         .text-input:focus {
@@ -200,6 +224,7 @@
             font-weight: bold;
             cursor: pointer;
             transition: background-color 0.3s;
+            width: 100%;
         }
         
         .update-text-btn:hover {
@@ -217,6 +242,7 @@
             cursor: pointer;
             transition: background-color 0.3s;
             margin-top: 10px;
+            width: 100%;
         }
         
         .download-btn:hover {
@@ -233,6 +259,7 @@
             grid-template-columns: repeat(4, 1fr);
             gap: 10px;
             margin-top: 15px;
+            width: 100%;
         }
         
         .image-option {
@@ -243,6 +270,7 @@
             cursor: pointer;
             border: 3px solid transparent;
             transition: all 0.3s;
+            max-width: 100%;
         }
         
         .image-option:hover {
@@ -261,6 +289,7 @@
             margin: 20px 0 10px 0;
             text-align: center;
             font-weight: 600;
+            width: 100%;
         }
         
         .download-info {
@@ -268,6 +297,7 @@
             font-size: 12px;
             color: #ccc;
             margin-top: 5px;
+            width: 100%;
         }
 
         /* Container untuk screenshot (hidden) */
@@ -277,12 +307,133 @@
             left: -10000px;
             width: 340px;
             height: 620px;
-            background-color: #000;
+            background-color: transparent;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
             align-items: center;
             padding-top: 120px;
+            overflow: hidden;
+        }
+
+        /* Style khusus untuk screenshot */
+        .screenshot-gift-section {
+            background-color: transparent !important;
+            padding: 15px;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 320px;
+        }
+
+        .screenshot-gift-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px 5px;
+            text-align: center;
+            color: white;
+            width: 100%;
+        }
+
+        .screenshot-gift-image {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            object-fit: cover;
+            max-width: 100%;
+        }
+
+        .screenshot-gift-name {
+            font-size: 11px;
+            color: white;
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        /* Media query untuk responsivitas */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+                gap: 20px;
+            }
+            
+            .phone-container {
+                width: 320px;
+                height: 568px;
+                max-width: 95%;
+            }
+            
+            .editor-container {
+                width: 350px;
+                max-width: 95%;
+            }
+            
+            .gift-section {
+                max-width: 280px;
+                padding: 12px;
+            }
+            
+            .gift-grid {
+                gap: 12px;
+            }
+            
+            .image-options {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 8px;
+            }
+            
+            .image-option {
+                width: 65px;
+                height: 65px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .phone-container {
+                width: 300px;
+                height: 533px;
+            }
+            
+            .editor-container {
+                width: 320px;
+            }
+            
+            .gift-section {
+                max-width: 260px;
+                padding: 10px;
+            }
+            
+            .gift-grid {
+                gap: 10px;
+            }
+            
+            .name-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .image-options {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 6px;
+            }
+            
+            .image-option {
+                width: 60px;
+                height: 60px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .image-options {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .image-option {
+                width: 55px;
+                height: 55px;
+            }
         }
     </style>
 </head>
@@ -354,7 +505,7 @@
         <div class="section-title">Download</div>
         <div class="editor-controls">
             <button class="download-btn" id="downloadBtn">Download Konten Gift (PNG)</button>
-            <div class="download-info">Download semua 6 gift dalam 1 file PNG (hanya konten tanpa border HP)</div>
+            <div class="download-info">Download semua 6 gift dalam 1 file PNG dengan background transparan</div>
         </div>
 
         <!-- Edit Gambar -->
@@ -1103,15 +1254,23 @@
                 }
             });
             
-            // Fungsi untuk render opsi gambar
+            // Fungsi untuk render opsi gambar - DIPERBAIKI
             function renderImageOptions(options) {
                 imageOptions.innerHTML = '';
+                
+                console.log('Rendering image options:', options); // Debug log
                 
                 options.forEach((imageUrl, index) => {
                     const imgOption = document.createElement('img');
                     imgOption.className = 'image-option';
                     imgOption.src = imageUrl;
                     imgOption.alt = `Option ${index + 1}`;
+                    imgOption.title = `Gambar ${index + 1}`;
+                    
+                    // Set gambar pertama sebagai selected
+                    if (index === 0) {
+                        imgOption.classList.add('selected');
+                    }
                     
                     imgOption.addEventListener('click', () => {
                         if (selectedGiftId) {
@@ -1134,10 +1293,14 @@
                     
                     imageOptions.appendChild(imgOption);
                 });
+                
+                console.log('Total image options rendered:', imageOptions.children.length); // Debug log
             }
             
             // Seleksi nama pertama secara default
-            document.querySelector('.name-item').click();
+            if (document.querySelector('.name-item')) {
+                document.querySelector('.name-item').click();
+            }
         }
         
         // Fungsi untuk update nama gift
@@ -1193,7 +1356,7 @@
             }
         }
         
-        // Fungsi untuk download screenshot konten saja
+        // Fungsi untuk download screenshot konten saja dengan background transparan
         function downloadContentScreenshot() {
             const originalText = downloadBtn.textContent;
             downloadBtn.textContent = 'Mendownload...';
@@ -1218,18 +1381,44 @@
             }
             
             function captureAndDownloadContent() {
-                // Clone konten gift section untuk screenshot
+                // Clone konten gift section untuk screenshot dengan style khusus
                 const giftSection = document.querySelector('.gift-section');
                 const screenshotContainer = document.getElementById('screenshotContainer');
                 
-                // Clear dan isi ulang screenshot container
+                // Clear dan isi ulang screenshot container dengan style transparan
                 screenshotContainer.innerHTML = '';
-                const clonedGiftSection = giftSection.cloneNode(true);
-                screenshotContainer.appendChild(clonedGiftSection);
                 
-                // Capture hanya konten gift section
+                // Buat elemen gift section khusus untuk screenshot
+                const screenshotGiftSection = document.createElement('div');
+                screenshotGiftSection.className = 'screenshot-gift-section';
+                
+                // Clone grid gift
+                const giftGrid = giftSection.querySelector('.gift-grid').cloneNode(true);
+                
+                // Update class untuk item gift agar menggunakan style screenshot
+                const giftItems = giftGrid.querySelectorAll('.gift-item');
+                giftItems.forEach(item => {
+                    item.className = 'screenshot-gift-item';
+                    
+                    // Update class untuk gambar
+                    const giftImage = item.querySelector('.gift-image');
+                    if (giftImage) {
+                        giftImage.className = 'screenshot-gift-image';
+                    }
+                    
+                    // Update class untuk nama
+                    const giftName = item.querySelector('.gift-name');
+                    if (giftName) {
+                        giftName.className = 'screenshot-gift-name';
+                    }
+                });
+                
+                screenshotGiftSection.appendChild(giftGrid);
+                screenshotContainer.appendChild(screenshotGiftSection);
+                
+                // Capture hanya konten gift section dengan background transparan
                 html2canvas(screenshotContainer, {
-                    backgroundColor: '#000000',
+                    backgroundColor: null, // Background transparan
                     scale: 2, // Higher quality
                     useCORS: true,
                     allowTaint: true,
@@ -1240,7 +1429,7 @@
                         const url = URL.createObjectURL(blob);
                         const a = document.createElement('a');
                         a.href = url;
-                        a.download = 'tiktok_gifts_content.png';
+                        a.download = 'tiktok_gifts_transparent.png';
                         document.body.appendChild(a);
                         a.click();
                         document.body.removeChild(a);
@@ -1248,7 +1437,7 @@
                         
                         downloadBtn.textContent = originalText;
                         downloadBtn.disabled = false;
-                        alert('Konten gift berhasil didownload!');
+                        alert('Konten gift dengan background transparan berhasil didownload!');
                     }, 'image/png');
                 }).catch(error => {
                     console.error('Error capturing screenshot:', error);
