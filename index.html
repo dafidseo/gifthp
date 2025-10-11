@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tampilan HP 9:16 dengan Editor Gift</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #121212;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            gap: 30px;
+        }
+        
+        /* Container HP */
+        .phone-container {
+            width: 360px;
+            height: 640px;
+            background-color: #000;
+            border-radius: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            position: relative;
+            border: 10px solid #222;
+        }
+        
+        .content {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            background-color: #000;
+            padding-top: 120px;
+        }
+        
+        .gift-section {
+            background-color: rgba(0, 0, 0, 0.9);
+            padding: 15px;
+            border-radius: 15px;
+        }
+        
+        .gift-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+        
+        .gift-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 8px 5px;
+            text-align: center;
+            color: white;
+        }
+        
+        .gift-image {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            object-fit: cover;
+        }
+        
+        .gift-name {
+            font-size: 11px;
+        }
+        
+        .notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 25px;
+            background-color: #222;
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+            z-index: 10;
+        }
+        
+        /* Container Editor */
+        .editor-container {
+            width: 400px;
+            background-color: #1a1a1a;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            color: white;
+        }
+        
+        .editor-title {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #ff0050;
+            font-size: 18px;
+        }
+        
+        .editor-subtitle {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #ccc;
+            font-size: 14px;
+        }
+        
+        .name-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .name-item {
+            padding: 12px 8px;
+            background-color: #2a2a2a;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            border: 2px solid transparent;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        .name-item:hover {
+            background-color: #333;
+            transform: scale(1.05);
+        }
+        
+        .name-item.active {
+            background-color: #ff0050;
+            border-color: white;
+        }
+        
+        .current-selection {
+            text-align: center;
+            margin: 15px 0;
+            padding: 10px;
+            background-color: #2a2a2a;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #ff0050;
+            font-weight: 500;
+        }
+        
+        .editor-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .control-label {
+            font-size: 14px;
+            color: #ccc;
+            font-weight: 500;
+        }
+        
+        .text-input {
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #444;
+            background-color: #2a2a2a;
+            color: white;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .text-input:focus {
+            outline: none;
+            border-color: #ff0050;
+            background-color: #333;
+        }
+        
+        .update-text-btn {
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            background-color: #00f2ea;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .update-text-btn:hover {
+            background-color: #00d4cc;
+        }
+        
+        .image-options {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .image-option {
+            width: 70px;
+            height: 70px;
+            border-radius: 10px;
+            object-fit: cover;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .image-option:hover {
+            transform: scale(1.1);
+            border-color: #ff0050;
+        }
+        
+        .image-option.selected {
+            border-color: #00f2ea;
+            transform: scale(1.1);
+        }
+        
+        .section-title {
+            font-size: 16px;
+            color: #00f2ea;
+            margin: 20px 0 10px 0;
+            text-align: center;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <!-- Container HP -->
+    <div class="phone-container">
+        <div class="notch"></div>
+        
+        <div class="content">
+            <!-- Gift Section di HP -->
+            <div class="gift-section">
+                <div class="gift-grid" id="phoneGiftGrid">
+                    <div class="gift-item" data-gift-id="1">
+                        <img src="https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/eba3a9bb85c33e017f3648eaf88d7189~tplv-obj.webp" alt="Gift 1" class="gift-image">
+                        <div class="gift-name">Lompat</div>
+                    </div>
+                    <div class="gift-item" data-gift-id="2">
+                        <img src="https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/a4c4dc437fd3a6632aba149769491f49.png~tplv-obj.webp" alt="Gift 2" class="gift-image">
+                        <div class="gift-name">Push Up</div>
+                    </div>
+                    <div class="gift-item" data-gift-id="3">
+                        <img src="https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/beaaa3a78a00b5b20661b00924ab0e7f~tplv-obj.webp" alt="Gift 3" class="gift-image">
+                        <div class="gift-name">Joget</div>
+                    </div>
+                    <div class="gift-item" data-gift-id="4">
+                        <img src="https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/20b8f61246c7b6032777bb81bf4ee055~tplv-obj.webp" alt="Gift 4" class="gift-image">
+                        <div class="gift-name">Lari</div>
+                    </div>
+                    <div class="gift-item" data-gift-id="5">
+                        <img src="https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/4e7ad6bdf0a1d860c538f38026d4e812~tplv-obj.webp" alt="Gift 5" class="gift-image">
+                        <div class="gift-name">Tampar</div>
+                    </div>
+                    <div class="gift-item" data-gift-id="6">
+                        <img src="https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/2f1e4f3f5c728ffbfa35705b480fdc92~tplv-obj.webp" alt="Gift 6" class="gift-image">
+                        <div class="gift-name">Menari</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Container Editor -->
+    <div class="editor-container">
+        <div class="editor-title">Editor Gift TikTok</div>
+        <div class="editor-subtitle">
+            Pilih gift melalui nama, lalu edit teks atau gambar
+        </div>
+        
+        <!-- Grid Nama Gift -->
+        <div class="name-grid" id="nameGrid">
+            <!-- Nama gift akan diisi oleh JavaScript -->
+        </div>
+        
+        <div class="current-selection" id="currentSelection">
+            Pilih gift terlebih dahulu
+        </div>
+
+        <!-- Edit Teks -->
+        <div class="section-title">Edit Teks</div>
+        <div class="editor-controls">
+            <div class="control-group">
+                <label class="control-label">Nama Gift Baru:</label>
+                <input type="text" id="giftNameInput" class="text-input" placeholder="Masukkan nama gift baru">
+            </div>
+            <button class="update-text-btn" id="updateTextBtn">Update Teks</button>
+        </div>
+
+        <!-- Edit Gambar -->
+        <div class="section-title">Edit Gambar</div>
+        <div class="image-options" id="imageOptions">
+            <!-- Opsi gambar akan diisi oleh JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        // Data gift dengan gambar yang berbeda-beda
+        const gifts = [
+            { 
+                id: 1, 
+                name: "Lompat", 
+                image: "https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/eba3a9bb85c33e017f3648eaf88d7189~tplv-obj.webp",
+                options: [
+                    "https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/eba3a9bb85c33e017f3648eaf88d7189~tplv-obj.webp",
+                    "https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/3f02fa9594bd1495ff4e8aa5ae265eef~tplv-obj.webp",
+                    "https://p16-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/e9cafce8279220ed26016a71076d6a8a.png~tplv-obj.webp",
+                    "https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/802a21ae29f9fae5abe3693de9f874bd~tplv-obj.webp",
+                    "https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/968820bc85e274713c795a6aef3f7c67~tplv-obj.webp",
+                    "https://p16-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/fc549cf1bc61f9c8a1c97ebab68dced7.png~tplv-obj.webp",
+                ]
+            },
+            { 
+                id: 2, 
+                name: "Push Up", 
+                image: "https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/eba3a9bb85c33e017f3648eaf88d7189~tplv-obj.webp",
+                options: [
+                    "https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/eba3a9bb85c33e017f3648eaf88d7189~tplv-obj.webp",
+                    "https://via.placeholder.com/70x70/00F2EA/FFFFFF?text=Star",
+                    "https://via.placeholder.com/70x70/FFFF00/000000?text=⭐",
+                    "https://via.placeholder.com/70x70/00FFFF/000000?text=Star2"
+                ]
+            },
+            { 
+                id: 3, 
+                name: "Joget", 
+                image: "https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/eba3a9bb85c33e017f3648eaf88d7189~tplv-obj.webp",
+                options: [
+                    "https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/eba3a9bb85c33e017f3648eaf88d7189~tplv-obj.webp",
+                    "https://via.placeholder.com/70x70/FFD700/FFFFFF?text=Crown",
+                    "https://via.placeholder.com/70x70/FFA500/FFFFFF?text=👑",
+                    "https://via.placeholder.com/70x70/FF9900/FFFFFF?text=Crown2"
+                ]
+            },
+            { 
+                id: 4, 
+                name: "Lari", 
+                image: "https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/eba3a9bb85c33e017f3648eaf88d7189~tplv-obj.webp",
+                options: [
+                    "https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/eba3a9bb85c33e017f3648eaf88d7189~tplv-obj.webp",
+                    "https://via.placeholder.com/70x70/FF00FF/FFFFFF?text=Diamond",
+                    "https://via.placeholder.com/70x70/00FFFF/000000?text=💎",
+                    "https://via.placeholder.com/70x70/CC00FF/FFFFFF?text=Dia2"
+                ]
+            },
+            { 
+                id: 5, 
+                name: "Tampar", 
+                image: "https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/eba3a9bb85c33e017f3648eaf88d7189~tplv-obj.webp",
+                options: [
+                    "https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/eba3a9bb85c33e017f3648eaf88d7189~tplv-obj.webp",
+                    "https://via.placeholder.com/70x70/00FF00/FFFFFF?text=Rocket",
+                    "https://via.placeholder.com/70x70/FF4444/FFFFFF?text=🚀",
+                    "https://via.placeholder.com/70x70/44FF44/FFFFFF?text=Roc2"
+                ]
+            },
+            { 
+                id: 6, 
+                name: "Menari", 
+                image: "https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/eba3a9bb85c33e017f3648eaf88d7189~tplv-obj.webp",
+                options: [
+                    "https://p16-webcast.tiktokcdn.com/img/maliva/webcast-va/eba3a9bb85c33e017f3648eaf88d7189~tplv-obj.webp",
+                    "https://via.placeholder.com/70x70/FFA500/FFFFFF?text=Super",
+                    "https://via.placeholder.com/70x70/FF0050/FFFFFF?text=🔥",
+                    "https://via.placeholder.com/70x70/FF5500/FFFFFF?text=Sup2"
+                ]
+            }
+        ];
+
+        let selectedGiftId = null;
+
+        // Inisialisasi editor
+        function initializeEditor() {
+            const nameGrid = document.getElementById('nameGrid');
+            const imageOptions = document.getElementById('imageOptions');
+            const currentSelection = document.getElementById('currentSelection');
+            const giftNameInput = document.getElementById('giftNameInput');
+            const updateTextBtn = document.getElementById('updateTextBtn');
+            
+            // Render nama gift
+            gifts.forEach(gift => {
+                const nameItem = document.createElement('div');
+                nameItem.className = 'name-item';
+                nameItem.textContent = gift.name;
+                nameItem.dataset.giftId = gift.id;
+                
+                nameItem.addEventListener('click', () => {
+                    // Update seleksi nama
+                    document.querySelectorAll('.name-item').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    nameItem.classList.add('active');
+                    
+                    // Set gift yang dipilih
+                    selectedGiftId = gift.id;
+                    currentSelection.textContent = `Sedang mengedit: ${gift.name}`;
+                    
+                    // Isi input teks dengan nama saat ini
+                    giftNameInput.value = gift.name;
+                    
+                    // Render opsi gambar untuk gift ini
+                    renderImageOptions(gift.options);
+                });
+                
+                nameGrid.appendChild(nameItem);
+            });
+            
+            // Event listener untuk update teks
+            updateTextBtn.addEventListener('click', () => {
+                if (selectedGiftId) {
+                    const newName = giftNameInput.value.trim();
+                    if (newName) {
+                        updateGiftName(selectedGiftId, newName);
+                    } else {
+                        alert('Masukkan nama gift terlebih dahulu!');
+                    }
+                } else {
+                    alert('Pilih gift terlebih dahulu!');
+                }
+            });
+            
+            // Event listener untuk Enter key
+            giftNameInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    updateTextBtn.click();
+                }
+            });
+            
+            // Fungsi untuk render opsi gambar
+            function renderImageOptions(options) {
+                imageOptions.innerHTML = '';
+                
+                options.forEach((imageUrl, index) => {
+                    const imgOption = document.createElement('img');
+                    imgOption.className = 'image-option';
+                    imgOption.src = imageUrl;
+                    imgOption.alt = `Option ${index + 1}`;
+                    
+                    imgOption.addEventListener('click', () => {
+                        if (selectedGiftId) {
+                            // Update gambar di HP
+                            updateGiftImage(selectedGiftId, imageUrl);
+                            
+                            // Update seleksi gambar
+                            document.querySelectorAll('.image-option').forEach(option => {
+                                option.classList.remove('selected');
+                            });
+                            imgOption.classList.add('selected');
+                            
+                            // Feedback
+                            imgOption.style.transform = 'scale(1.2)';
+                            setTimeout(() => {
+                                imgOption.style.transform = 'scale(1.1)';
+                            }, 200);
+                        }
+                    });
+                    
+                    imageOptions.appendChild(imgOption);
+                });
+            }
+            
+            // Seleksi nama pertama secara default
+            document.querySelector('.name-item').click();
+        }
+        
+        // Fungsi untuk update nama gift
+        function updateGiftName(giftId, newName) {
+            const gift = gifts.find(g => g.id === giftId);
+            if (gift) {
+                // Update data
+                gift.name = newName;
+                
+                // Update tampilan HP
+                const phoneGiftItem = document.querySelector(`.gift-item[data-gift-id="${giftId}"]`);
+                if (phoneGiftItem) {
+                    const giftName = phoneGiftItem.querySelector('.gift-name');
+                    giftName.textContent = newName;
+                    
+                    // Animasi feedback
+                    giftName.style.color = '#00f2ea';
+                    setTimeout(() => {
+                        giftName.style.color = 'white';
+                    }, 1000);
+                }
+                
+                // Update tampilan editor
+                const nameItem = document.querySelector(`.name-item[data-gift-id="${giftId}"]`);
+                if (nameItem) {
+                    nameItem.textContent = newName;
+                }
+                
+                // Update current selection
+                document.getElementById('currentSelection').textContent = `Sedang mengedit: ${newName}`;
+                
+                alert(`Nama gift berhasil diubah menjadi: ${newName}`);
+            }
+        }
+        
+        // Fungsi untuk update gambar gift
+        function updateGiftImage(giftId, newImage) {
+            const phoneGiftItem = document.querySelector(`.gift-item[data-gift-id="${giftId}"]`);
+            if (phoneGiftItem) {
+                const giftImage = phoneGiftItem.querySelector('.gift-image');
+                giftImage.src = newImage;
+                
+                // Animasi feedback di HP
+                giftImage.style.transform = 'scale(1.3)';
+                setTimeout(() => {
+                    giftImage.style.transform = 'scale(1)';
+                }, 300);
+            }
+        }
+        
+        // Inisialisasi saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', initializeEditor);
+    </script>
+</body>
+</html>
